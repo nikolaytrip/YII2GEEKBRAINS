@@ -12,7 +12,7 @@ $config = [
     'bootstrap' => ['log'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
-        '@npm'   => '@vendor/npm-asset',
+        '@npm' => '@vendor/npm-asset',
     ],
     'components' => [
         'request' => [
@@ -43,6 +43,14 @@ $config = [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
                 ],
+                // 9) Создать в конфиге у компонента log дополнительную цель (target) для записи в лог факта авторизации
+                // пользователя. Уровень (level) сделать info, категорию и файл назвать, например login.
+                [
+                    'class' => 'yii\log\FileTarget',
+                    'levels' => ['info'],
+                    'categories' => ['login'],
+                    'logFile' => '@runtime/logs/login.log'
+                ]
             ],
         ],
         'db' => $db,
@@ -50,7 +58,10 @@ $config = [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+            // Урл страниц просмотра для всех контроллеров д.б. вида /task/1
             'rules' => [
+                '<controller:[\w-]+>s' => '<controller>/index',
+                '<controller:[\w-]+>/<id:\d+>' => '<controller>/view',
             ],
         ],
         // Настроить в web.php компонент test с ключом class равным \app\components\TestService::class,
@@ -58,7 +69,7 @@ $config = [
         'test' => [
             'class' => TestService::class,
             'prop' => 'Задаем свой props в описании компонента test, которое выводится во views.',
-            ],
+        ],
 
     ],
     'params' => $params,

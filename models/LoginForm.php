@@ -60,6 +60,8 @@ class LoginForm extends Model
     public function login()
     {
         if ($this->validate()) {
+            // 9) После успешного логина нужно добавлять сообщение с любым текстом, указанным уровнем и категорией.
+            Yii::info('success', 'login');
             return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
         }
         return false;
